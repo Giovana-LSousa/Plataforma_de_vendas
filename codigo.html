@@ -1,356 +1,168 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import Cell - Celulares Importados</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Import Cell - Celulares Importados</title>
+<script src="https://cdn.tailwindcss.com"></script>
 
-        :root {
-            --blue: #00bfff;
-            --pink: #ff69b4;
-        }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 
-        * {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+:root {
+--blue: #00bfff;
+--pink: #ff69b4;
+}
 
-        body {
-            font-family: 'Inter', system_ui, sans-serif;
-        }
+* { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+body { font-family: 'Inter', system_ui, sans-serif; }
 
-        .logo-font {
-            font-family: 'Poppins', sans-serif;
-        }
+.product-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+}
 
-        .product-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .product-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
-        }
-
-        .color-circle {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid #fff;
-            box-shadow: 0 0 0 4px #e5e7eb;
-            transition: all 0.2s ease;
-        }
-
-        .color-circle.selected {
-            border: 3px solid #00bfff;
-            box-shadow: 0 0 0 6px #bae6fd;
-            transform: scale(1.12);
-        }
-
-        .storage-btn.active {
-            background-color: #00bfff;
-            color: white;
-            border-color: #00bfff;
-            transform: scale(1.05);
-        }
-
-        .tab-active {
-            border-bottom: 3px solid #00bfff;
-            color: #00bfff;
-            font-weight: 600;
-        }
-
-        .modal-content {
-            max-height: 95vh;
-            overflow-y: auto;
-        }
-
-        /* ==================== FORMATAÇÃO DAS IMAGENS ==================== */
-        .product-card img {
-            width: 100%;
-            height: 260px;
-            object-fit: contain;
-            background-color: #f8fafc;
-            padding: 12px;
-        }
-
-        #modal-imagem {
-            width: 100%;
-            height: 320px;
-            object-fit: contain;
-            background-color: #f8fafc;
-            border-radius: 16px;
-        }
-
-        /* ==================== BOTÃO DE ACESSIBILIDADE LIBRAS ==================== */
-        #btn-libras {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 1000;
-            width: 68px;
-            height: 68px;
-            background: linear-gradient(135deg, var(--blue), #1e40af);
-            color: white;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            box-shadow: 0 10px 25px -5px rgb(0 191 255 / 0.5),
-                        0 4px 6px -1px rgb(0 0 0 / 0.1);
-            border: 4px solid white;
-            cursor: pointer;
-        }
-
-        #btn-libras:hover {
-            transform: scale(1.12) rotate(8deg);
-            box-shadow: 0 15px 30px -5px rgb(0 191 255 / 0.6);
-        }
-
-        #btn-libras.active {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 10px 25px -5px rgb(16 185 129 / 0.5);
-        }
-
-        .libras-tooltip {
-            position: absolute;
-            bottom: 85px;
-            right: 0;
-            background: #9abce7;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 9999px;
-            font-size: 14px;
-            white-space: nowrap;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        #btn-libras:hover .libras-tooltip {
-            opacity: 1;
-            transform: translateY(-8px);
-        }
-    </style>
+.color-circle {
+    width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+    border: 3px solid #fff; box-shadow: 0 0 0 4px #e5e7eb;
+}
+.color-circle.selected {
+    border: 3px solid #00bfff; box-shadow: 0 0 0 6px #bae6fd; transform: scale(1.12);
+}
+.storage-btn.active {
+    background-color: #00bfff; color: white; border-color: #00bfff; transform: scale(1.05);
+}
+</style>
 </head>
 <body class="bg-slate-50">
 
-    <!-- HEADER -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="w-full px-4 sm:px-6 py-5 flex justify-between items-center max-w-screen-2xl mx-auto">
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 bg-gradient-to-br from-[#00bfff] to-[#ff69b4] rounded-3xl flex items-center justify-center text-3xl shadow">📱</div>
-                <h1 class="text-3xl font-bold tracking-tighter bg-gradient-to-r from-[#00bfff] to-[#ff69b4] bg-clip-text text-transparent">Import Cell</h1>
+<!-- HEADER -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+<div class="w-full px-4 sm:px-6 py-5 flex justify-between items-center max-w-screen-2xl mx-auto">
+    <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-gradient-to-br from-[#00bfff] to-[#ff69b4] rounded-3xl flex items-center justify-center text-3xl shadow">📱</div>
+        <h1 class="text-3xl font-bold tracking-tighter bg-gradient-to-r from-[#00bfff] to-[#ff69b4] bg-clip-text text-transparent">Import Cell</h1>
+    </div>
+    <div class="flex items-center gap-6">
+        <button onclick="showAuthModal()" id="auth-button" class="flex items-center gap-2 text-lg hover:text-[#00bfff]">Entrar / Cadastrar 👤</button>
+        <button onclick="toggleCart()" class="flex items-center gap-2 hover:scale-110 transition relative">
+            🛒 <span id="cart-count" class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </button>
+    </div>
+</div>
+</header>
+
+<main class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 py-10">
+    <h1 class="text-5xl font-bold text-center mb-4 text-slate-800">Celulares Importados</h1>
+    <p class="text-center text-slate-600 mb-12 text-lg">Os melhores preços do mercado com qualidade premium</p>
+
+    <div class="mb-16">
+        <h2 class="text-4xl font-bold mb-2 text-slate-800">Recomendados para você</h2>
+        <div id="recomendados-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+    </div>
+
+    <h2 class="text-3xl font-bold mb-6 text-slate-800">Todos os Celulares</h2>
+    <div id="produtos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+</main>
+
+<!-- MODAL DO PRODUTO -->
+<div id="product-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onclick="if(event.target === this) closeProductModal()">
+    <div class="bg-white rounded-3xl w-full max-w-lg max-h-[95vh] overflow-y-auto relative" onclick="event.stopImmediatePropagation()">
+        <button onclick="closeProductModal()" class="absolute top-5 right-5 text-4xl">×</button>
+        <div class="p-6">
+            <h2 id="modal-nome" class="text-2xl font-bold mb-4"></h2>
+            <div class="bg-slate-50 rounded-2xl p-4 mb-6 flex justify-center min-h-[300px]">
+                <img id="modal-imagem" class="max-h-[380px] w-full object-contain" alt="Celular">
             </div>
+            <p id="modal-descricao" class="text-slate-600 mb-6 leading-relaxed"></p>
+
+            <div class="mb-6">
+                <p class="font-semibold mb-3 text-slate-700">Armazenamento</p>
+                <div id="storage-options" class="flex flex-wrap gap-3"></div>
+            </div>
+            <div class="mb-8">
+                <p class="font-semibold mb-3 text-slate-700">Cor</p>
+                <div id="color-options" class="flex gap-4"></div>
+            </div>
+
+            <div class="flex justify-between items-center pt-4 border-t">
+                <div>
+                    <span class="text-sm text-slate-500">Preço</span>
+                    <p id="modal-preco" class="text-3xl font-bold text-[#00bfff]"></p>
+                </div>
+                <button onclick="adicionarAoCarrinho()" class="px-10 py-4 bg-gradient-to-r from-[#00bfff] to-[#ff69b4] text-white font-semibold rounded-3xl">
+                    Adicionar ao Carrinho
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CARRINHO DRAWER -->
+<div id="cart-drawer" class="hidden fixed inset-0 bg-black/70 z-[150] flex justify-end">
+    <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col relative">
+        <button onclick="toggleCart()" class="absolute top-5 right-5 text-4xl">×</button>
+        <div class="px-6 py-5 border-b"><h3 class="text-2xl font-bold">Seu Carrinho</h3></div>
+        <div id="cart-items" class="flex-1 overflow-auto p-6 space-y-6"></div>
+        <div class="p-6 border-t">
+            <div class="space-y-3 mb-6">
+                <div class="flex justify-between"><span class="text-slate-600">Subtotal</span><span id="subtotal">R$ 0,00</span></div>
+                <div class="flex justify-between"><span class="text-slate-600">Frete</span><span class="text-green-600">R$ 15,00</span></div>
+                <div class="flex justify-between text-xl font-bold border-t pt-4">
+                    <span>Total</span><span id="cart-total" class="text-[#00bfff]">R$ 0,00</span>
+                </div>
+            </div>
+            <button onclick="showCheckoutModal()" class="w-full py-6 bg-gradient-to-r from-[#00bfff] to-[#ff69b4] text-white font-semibold text-xl rounded-3xl">
+                Finalizar Compra
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkout-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[200] p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg max-h-[95vh] overflow-y-auto">
+        <div class="p-8">
+            <h2 class="text-3xl font-bold mb-6">Finalizar Compra</h2>
             
-            <div class="flex items-center gap-6">
-                <button onclick="showAuthModal()" id="auth-button" 
-                        class="flex items-center gap-2 text-lg hover:text-[#00bfff] transition-colors">
-                    Entrar / Cadastrar 👤
-                </button>
-                <button onclick="toggleCart()" class="flex items-center gap-2 hover:scale-110 transition relative">
-                    🛒
-                    <span id="cart-count" class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 py-10">
-        <h1 class="text-5xl font-bold text-center mb-4 text-slate-800">Celulares Importados</h1>
-        <p class="text-center text-slate-600 mb-12 text-lg">Os melhores preços do mercado com qualidade premium</p>
-        
-        <!-- Grid de Produtos -->
-        <div id="produtos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
-    </main>
-
-    <!-- ==================== DETALHES DOS CELULARES ==================== -->
-    <div id="product-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-3xl w-full max-w-lg modal-content">
-            <div class="p-6">
-                <div class="flex justify-between items-start mb-4">
-                    <h2 id="modal-nome" class="text-2xl font-bold text-slate-800"></h2>
-                    <button onclick="closeProductModal()" 
-                            class="text-4xl leading-none text-slate-400 hover:text-slate-700 transition">×</button>
-                </div>
-                
-                <img id="modal-imagem" class="w-full h-72" alt="Celular">
-
-                <p id="modal-descricao" class="text-slate-600 mb-6 leading-relaxed"></p>
-
-                <!-- Armazenamento -->
-                <div class="mb-6">
-                    <p class="font-semibold mb-3 text-slate-700">Armazenamento</p>
-                    <div id="storage-options" class="flex flex-wrap gap-3"></div>
-                </div>
-
-                <!-- Cores -->
-                <div class="mb-8">
-                    <p class="font-semibold mb-3 text-slate-700">Cor</p>
-                    <div id="color-options" class="flex gap-4"></div>
-                </div>
-
-                <!-- Preço e botão -->
-                <div class="flex items-center justify-between pt-4 border-t">
-                    <div>
-                        <span class="text-sm text-slate-500">Preço</span>
-                        <p id="modal-preco" class="text-3xl font-bold text-[#00bfff]"></p>
-                    </div>
-                    <button onclick="adicionarAoCarrinho()" 
-                            class="px-10 py-4 bg-gradient-to-r from-[#00bfff] to-[#ff69b4] text-white font-semibold rounded-3xl hover:brightness-110 transition">
-                        Adicionar ao Carrinho
+            <div class="mb-8">
+                <p class="font-semibold mb-4 text-slate-700">Método de Pagamento</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="selectPaymentMethod('pix')" id="btn-pix" class="border-2 border-[#00bfff] bg-blue-50 rounded-2xl p-6 text-center hover:scale-105">
+                        📱 PIX
+                    </button>
+                    <button onclick="selectPaymentMethod('cartao')" id="btn-cartao" class="border-2 border-slate-200 rounded-2xl p-6 text-center hover:scale-105">
+                        💳 Cartão de Crédito
                     </button>
                 </div>
             </div>
+
+            <div id="cartao-form" class="hidden space-y-4 mb-8">
+                <input type="text" id="numero-cartao" maxlength="19" placeholder="0000 0000 0000 0000" class="w-full px-4 py-3 border border-slate-300 rounded-2xl">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="validade-cartao" placeholder="MM/AA" class="w-full px-4 py-3 border border-slate-300 rounded-2xl">
+                    <input type="text" id="cvv-cartao" maxlength="4" placeholder="CVV" class="w-full px-4 py-3 border border-slate-300 rounded-2xl">
+                </div>
+                <input type="text" id="nome-cartao" placeholder="Nome completo no cartão" class="w-full px-4 py-3 border border-slate-300 rounded-2xl">
+            </div>
+
+            <div class="mb-8">
+                <p class="font-semibold mb-3 text-slate-700">Endereço de Entrega</p>
+                <textarea id="endereco-entrega" rows="3" placeholder="Rua, número, bairro, cidade, CEP..." class="w-full px-4 py-3 border border-slate-300 rounded-2xl"></textarea>
+            </div>
+
+            <div class="flex justify-between items-center text-2xl font-bold mb-8">
+                <span>Total</span>
+                <span id="modal-total" class="text-[#00bfff]">R$ 0,00</span>
+            </div>
+
+            <button onclick="confirmarPagamento()" class="w-full py-6 bg-gradient-to-r from-[#00bfff] to-[#ff69b4] text-white font-semibold text-xl rounded-3xl">
+                Confirmar Pagamento
+            </button>
+            <button onclick="closeCheckoutModal()" class="mt-4 w-full text-slate-500 hover:text-slate-700">Voltar</button>
         </div>
     </div>
-
-    <!-- ==================== LOGIN / CADASTRO ==================== -->
-    <div id="auth-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[200] p-4">
-        <div class="bg-white rounded-3xl w-full max-w-md">
-            <div class="p-8">
-                <div class="flex border-b mb-8">
-                    <button onclick="switchTab(0)" id="tab-login" class="tab-active flex-1 pb-4 text-center text-lg">Login</button>
-                    <button onclick="switchTab(1)" id="tab-register" class="flex-1 pb-4 text-center text-lg">Cadastrar</button>
-                </div>
-
-                <div id="login-form">
-                    <input type="email" id="login-email" placeholder="E-mail" 
-                           class="w-full px-5 py-4 border border-slate-300 rounded-2xl mb-4 focus:outline-none focus:border-[#00bfff]">
-                    <input type="password" id="login-password" placeholder="Senha" 
-                           class="w-full px-5 py-4 border border-slate-300 rounded-2xl mb-6 focus:outline-none focus:border-[#00bfff]">
-                    <button onclick="fazerLogin()" 
-                            class="w-full py-4 bg-[#00bfff] hover:bg-[#00a8e0] text-white font-semibold rounded-3xl transition">Entrar</button>
-                </div>
-
-                <div id="register-form" class="hidden">
-                    <input type="text" id="reg-nome" placeholder="Nome completo" 
-                           class="w-full px-5 py-4 border border-slate-300 rounded-2xl mb-4">
-                    <input type="email" id="reg-email" placeholder="E-mail" 
-                           class="w-full px-5 py-4 border border-slate-300 rounded-2xl mb-4">
-                    <input type="password" id="reg-password" placeholder="Senha (mínimo 6 caracteres)" 
-                           class="w-full px-5 py-4 border border-slate-300 rounded-2xl mb-6">
-                    <button onclick="fazerCadastro()" 
-                            class="w-full py-4 bg-gradient-to-r from-[#00bfff] to-[#ff69b4] text-white font-semibold rounded-3xl transition">Criar Conta</button>
-                </div>
-            </div>
-            <div class="px-8 py-5 border-t text-center">
-                <button onclick="closeAuthModal()" class="text-slate-500 hover:text-slate-700">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== MINHA CONTA ==================== -->
-    <div id="account-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[200] p-4">
-        <div class="bg-white rounded-3xl w-full max-w-lg">
-            <div class="p-6 border-b flex justify-between items-center bg-slate-50">
-                <h2 class="text-2xl font-bold">Minha Conta</h2>
-                <button onclick="closeAccountModal()" class="text-4xl text-slate-400 hover:text-black">×</button>
-            </div>
-            
-            <div class="p-8">
-                <div class="mb-8">
-                    <p class="text-slate-600">Bem-vindo,</p>
-                    <p id="account-name" class="text-2xl font-bold text-slate-800"></p>
-                </div>
-
-                <h3 class="font-semibold text-lg mb-4">Meus Pedidos</h3>
-                <div id="meus-pedidos" class="space-y-5 max-h-[420px] overflow-auto pr-2"></div>
-            </div>
-
-            <div class="p-6 border-t bg-slate-50">
-                <button onclick="fazerLogout()" 
-                        class="w-full py-4 text-red-600 font-medium rounded-3xl hover:bg-red-50 transition">Sair da Conta</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== CARRINHO DRAWER ==================== -->
-    <div id="cart-drawer" class="hidden fixed inset-0 bg-black/70 z-[150] flex justify-end">
-        <div onclick="event.stopImmediatePropagation()" 
-             class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col">
-            <div class="px-6 py-5 border-b flex justify-between items-center">
-                <h3 class="text-2xl font-bold">Seu Carrinho</h3>
-                <button onclick="toggleCart()" class="text-4xl text-slate-400 hover:text-black">×</button>
-            </div>
-
-            <div id="cart-items" class="flex-1 overflow-auto p-6 space-y-6"></div>
-
-            <div class="p-6 border-t">
-                <div class="space-y-3 mb-8">
-                    <div class="flex justify-between text-lg">
-                        <span class="text-slate-600">Subtotal</span>
-                        <span id="subtotal" class="font-medium">R$ 0,00</span>
-                    </div>
-                    <div class="flex justify-between text-lg">
-                        <span class="text-slate-600">Frete</span>
-                        <span class="text-green-600 font-medium">R$ 15,00</span>
-                    </div>
-                    <div class="flex justify-between text-2xl font-bold border-t pt-4">
-                        <span>Total</span>
-                        <span id="cart-total" class="text-[#00bfff]">R$ 0,00</span>
-                    </div>
-                </div>
-
-                <button onclick="showPaymentModal()" 
-                        class="w-full py-6 bg-gradient-to-r from-[#00bfff] to-[#ff69b4] text-white font-semibold text-xl rounded-3xl shadow-lg">
-                    Finalizar Compra
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== MODAL PAGAMENTO ==================== -->
-    <div id="payment-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[250] p-4">
-        <div class="bg-white rounded-3xl w-full max-w-md">
-            <div class="p-8">
-                <h2 class="text-2xl font-bold mb-6">Forma de Pagamento</h2>
-                
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <button onclick="selectPaymentMethod('pix')" id="btn-pix" 
-                            class="payment-btn border-2 border-[#00bfff] bg-blue-50 p-8 rounded-3xl text-center">
-                        <span class="text-5xl mb-3 block">💰</span>
-                        <span class="font-semibold text-lg">PIX</span>
-                    </button>
-                    <button onclick="selectPaymentMethod('cartao')" id="btn-cartao"
-                            class="payment-btn border-2 border-slate-200 p-8 rounded-3xl text-center">
-                        <span class="text-5xl mb-3 block">💳</span>
-                        <span class="font-semibold text-lg">Cartão</span>
-                    </button>
-                </div>
-
-                <div id="cartao-form" class="hidden space-y-5">
-                    <select id="bandeira" class="w-full p-4 border rounded-2xl">
-                        <option value="">Selecione a bandeira</option>
-                        <option value="visa">Visa</option>
-                        <option value="mastercard">Mastercard</option>
-                    </select>
-                    <input type="text" id="nome-cartao" placeholder="Nome impresso no cartão" class="w-full p-4 border rounded-2xl">
-                    <input type="text" id="numero-cartao" maxlength="16" 
-                           onkeypress="return /[0-9]/.test(event.key)" 
-                           placeholder="Número do cartão (16 dígitos)" class="w-full p-4 border rounded-2xl">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" id="validade" maxlength="5" placeholder="MM/AA" class="w-full p-4 border rounded-2xl">
-                        <input type="text" id="cvv" maxlength="3" 
-                               onkeypress="return /[0-9]/.test(event.key)" 
-                               placeholder="CVV" class="w-full p-4 border rounded-2xl">
-                    </div>
-                </div>
-
-                <button onclick="confirmarPagamento()" 
-                        class="w-full mt-10 py-6 bg-gradient-to-r from-[#00bfff] to-[#ff69b4] text-white font-bold text-xl rounded-3xl">
-                    Confirmar Pagamento
-                </button>
-                <button onclick="closePaymentModal()" class="w-full mt-4 py-4 text-slate-600 font-medium">Cancelar</button>
-            </div>
-        </div>
-    </div>
+</div>
 
     <script>
         // ==================== PRODUTOS ====================
@@ -476,353 +288,310 @@
                     { tamanho: "256", preco: 4000 },
                 ]
             },
+
+            // ------------------- Celular 8 ------------------ //
+            {
+                id: 8,
+                nome: "Xiomi 17 Pro Max",
+                descricao: " É um dos dispositivos topo de linha mais avançados do mundo Android. Ele traz configurações premium com o processador Snapdragon 8 Elite (5ª Geração), tela AMOLED de 120 Hz",
+                precoBase: 6400,
+                imagemBase: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi83wDAq8PQCuIaWOZJj8XtnAtCRP5tDo14A&s",
+                cores: [
+                    { nome: "Roxo", cor: "#DDA0DD", imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6pBi5yQnaw0sJfHQjJ58RBT-RWZK_DUodTw&s" },
+  		            { nome: "Verde" , cor: "#8FBC8F", imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStJS0wlcTbV33_0ju3d01fKV_7DFI2_3bRKQ&s" },	              
+		            { nome: "Preto" , cor: "#000000", imagem:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlJuVYSE64DAmPHyFpIwxpvoSMMDTbeU2L_A&s"} ,  ],
+                 armazenamento: [
+                { tamanho: "512", preco: 6470 },
+                ]
+            },
+
+            // ------------------- Celular 9 ------------------ //
+            {
+                id: 9,
+                nome: "Iphone 17e",
+                descricao: "O iPhone 17e é o modelo de entrada da geração mais recente da Apple, focado em custo-benefício e em manter um design compacto. Ele é ideal para quem deseja entrar no ecossistema atual com um valor mais acessíve",
+                precoBase: 4999,
+                imagemBase: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9LK0n-S67JOm6CU019CyNHlxrXW_2FMj0lw&s",
+                cores: [
+                    { nome: "Rosa", cor: "#FFC0CB", imagem: "https://m.media-amazon.com/images/I/41YoC-wH37L._AC_UF1000,1000_QL80_.jpg" },
+  		            { nome: "Branco" , cor: "#FFF5EE", imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr0k0UiMUsgE7OZy9CyuasTPNb6lPLN3_l1A&s" },	              
+		             { nome: "Preto" , cor: "#000000", imagem:"https://m.media-amazon.com/images/I/61ULimPWODL._AC_UF894,1000_QL80_.jpg"} ,],
+                     armazenamento: [
+                     { tamanho: "256GB", preco: 4299 },
+                ]
+            },
+
+            // ------------------- Celular 10 ------------------ //
+            {
+                id: 10,
+                nome: "Iphone Air",
+                descricao: "O iPhone 17 Air destaca-se como o modelo mais fino da Apple, trazendo um design ultrafino de 5,6 mm e tela Super Retina XDR de 6,5 polegadas",
+                precoBase: 7199,
+                imagemBase: "https://cdn.awsli.com.br/2500x2500/2549/2549769/produto/370975457/01-k1t35esh12.png",
+                cores: [
+                    { nome: "Azul céu", cor: "#CAE1FF", imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7WfKAkc3akVNIj2WP-Wtu86sVaREP8RWcQ&s" },
+  		            { nome: "Branco" , cor: "#FFF5EE", imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStoAVZGnxr0Fj-b1U_7bZuCqUwE_ina1nUBw&s" },	              
+		            { nome: "Preto" , cor: "#000000", imagem:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOegBk-vuaz623yZZrSEkYx2H_w6pyPZ3KWg&s"} ,],
+                     armazenamento: [
+                    { tamanho: "256GB", preco: 7248 },
+                ]
+            },
+
+            // ------------------- Celular 11 ------------------ //
+            {
+                id: 11,
+                nome: "Galaxy S25",
+                descricao: "É o topo de linha compacto da marca, focado em alta portabilidade e potência extrema. Ele traz o processador Snapdragon 8 Elite, 12 GB de RAM e design premium",
+                precoBase: 3889,
+                imagemBase: "https://www.notebookcheck.info/fileadmin/Notebooks/News/_nc4/galaxy-s25-fe-9400-rumours.jpg",
+                cores: [
+                    { nome: "Azul", cor: "#0000FF", imagem: "https://www.oficinadanet.com.br/media/obj_item/2047/381/samsung-galaxy-s25.jpg" },
+  		            { nome: "Branco" , cor: "#FFF5EE", imagem: "https://http2.mlstatic.com/D_728881-MLA99450916060_112025-C.jpg" },],
+                armazenamento: [
+                    { tamanho: "256GB", preco: 3900 },
+                ]
+            },
+
+          // ------------------- Celular 12 ------------------ //
+            {
+                id: 12,
+                nome: "REDMAGIC 11 Pro",
+                descricao: "Redmagic 11 Air 5G Versão Global, Processador Snapdragon 8 Elite, Câmera 50MP, Bateria 7000mAh,256/512GB + 12/19GB RAM",
+                precoBase: 5000,
+                imagemBase: "https://br.redmagic.gg/cdn/shop/files/Black_White_trace.png?v=1774525209",
+                cores: [
+  		            { nome: "Branco" , cor: "#FFF5EE", imagem: "https://br.redmagic.gg/cdn/shop/files/Trace-07_600x600.png?v=1774871146" },	              
+		            { nome: "Preto" , cor: "#000000", imagem:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKU6Gly3xkjFHcKsveu8f89Oe8my1ps0Ec4g&s"} ,],
+                armazenamento: [
+                    { tamanho: "512GB", preco: 5000 },
+		            { tamanho: "1tb", preco: 8900 },
+                ]
+            },
+
+
         ];
 
-        let carrinho = [];
-        let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-        let usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado')) || null;
-        let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+// ==================== VARIÁVEIS GLOBAIS ====================
+let carrinho = [];
+let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+let usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado')) || null;
 
-        let produtoSelecionado = null;
-        let corSelecionada = null;
-        let armazenamentoSelecionado = null;
-        let paymentMethod = 'pix';
-        let librasAtivado = true;
+let produtoSelecionado = null;
+let corSelecionada = null;
+let armazenamentoSelecionado = null;
+let paymentMethod = 'pix';
 
-        // ==================== FUNÇÕES LIBRAS ====================
-        function toggleLibras() {
-            const btn = document.getElementById('btn-libras');
-            const icon = document.getElementById('libras-icon');
+// ==================== AUTH FUNCTIONS ====================
+function showAuthModal() {
+    document.getElementById('auth-modal').classList.remove('hidden');
+    switchTab(0);
+}
+function closeAuthModal() {
+    document.getElementById('auth-modal').classList.add('hidden');
+}
+function switchTab(tab) {
+    const login = document.getElementById('login-form');
+    const register = document.getElementById('register-form');
+    if (tab === 0) {
+        login.classList.remove('hidden'); register.classList.add('hidden');
+    } else {
+        login.classList.add('hidden'); register.classList.remove('hidden');
+    }
+}
+function fazerCadastro() { alert("Função de cadastro - implemente se quiser"); closeAuthModal(); }
+function fazerLogin() { alert("Função de login - implemente se quiser"); closeAuthModal(); }
+function atualizarAuthButton() {
+    const btn = document.getElementById('auth-button');
+    if (usuarioLogado) btn.textContent = `Olá, ${usuarioLogado.nome}`;
+    else btn.textContent = "Entrar / Cadastrar 👤";
+}
 
-            librasAtivado = !librasAtivado;
+// ==================== CARRINHO ====================
+function toggleCart() {
+    const drawer = document.getElementById('cart-drawer');
+    drawer.classList.toggle('hidden');
+    if (!drawer.classList.contains('hidden')) renderCarrinho();
+}
 
-            if (librasAtivado) {
-                btn.classList.add('active');
-                icon.textContent = '🧏‍♀️';
-                const vlibrasBtn = document.querySelector('[vw-access-button]');
-                if (vlibrasBtn) vlibrasBtn.click();
-            } else {
-                btn.classList.remove('active');
-                icon.textContent = '🔇';
-                alert("🧏‍♀️ Tradutor de LIBRAS desativado.\nClique novamente para reativar.");
-            }
-        }
+function renderCarrinho() {
+    const container = document.getElementById('cart-items');
+    let html = '', subtotal = 0;
 
-        // ==================== RENDER PRODUTOS ====================
-        function renderProdutos() {
-            const container = document.getElementById('produtos-grid');
-            let html = '';
-            
-            produtos.forEach(prod => {
-                html += `
-                    <div onclick="abrirModalProduto(${prod.id})" 
-                         class="product-card bg-white rounded-3xl overflow-hidden shadow-sm cursor-pointer">
-                        <img src="${prod.imagemBase}">
-                        <div class="p-6">
-                            <h3 class="font-semibold text-xl mb-2">${prod.nome}</h3>
-                            <p class="text-slate-500 text-sm line-clamp-3 mb-4">${prod.descricao}</p>
-                            <div class="text-2xl font-bold text-[#00bfff]">
-                                A partir de R$ ${prod.precoBase.toLocaleString('pt-BR')}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
+    if (carrinho.length === 0) {
+        container.innerHTML = `<p class="text-center text-slate-400 py-16">Seu carrinho está vazio.</p>`;
+        document.getElementById('subtotal').textContent = 'R$ 0,00';
+        document.getElementById('cart-total').textContent = 'R$ 15,00';
+        return;
+    }
 
-        function abrirModalProduto(id) {
-            produtoSelecionado = produtos.find(p => p.id === id);
-            if (!produtoSelecionado) return;
+    carrinho.forEach((item, i) => {
+        subtotal += item.preco;
+        html += `
+            <div class="flex gap-4 border-b pb-6">
+                <img src="${item.imagem}" class="w-20 h-20 object-contain rounded-2xl bg-slate-100">
+                <div class="flex-1">
+                    <p class="font-medium">${item.nome}</p>
+                    <p class="text-sm text-slate-500">${item.cor} • ${item.armazenamento}</p>
+                    <p class="font-bold text-[#00bfff]">R$ ${item.preco.toLocaleString('pt-BR')}</p>
+                </div>
+                <button onclick="removerDoCarrinho(${i})" class="text-red-500 text-3xl">×</button>
+            </div>`;
+    });
 
-            document.getElementById('modal-nome').textContent = produtoSelecionado.nome;
-            document.getElementById('modal-descricao').textContent = produtoSelecionado.descricao;
-            document.getElementById('modal-imagem').src = produtoSelecionado.cores[0].imagem;
+    container.innerHTML = html;
+    document.getElementById('subtotal').textContent = `R$ ${subtotal.toLocaleString('pt-BR')}`;
+    document.getElementById('cart-total').textContent = `R$ ${(subtotal + 15).toLocaleString('pt-BR')}`;
+}
 
-            let storageHTML = '';
-            produtoSelecionado.armazenamento.forEach((item, i) => {
-                storageHTML += `<button onclick="selecionarArmazenamento(this, ${i})" class="storage-btn border-2 border-slate-300 px-6 py-3 rounded-2xl font-medium">${item.tamanho}</button>`;
-            });
-            document.getElementById('storage-options').innerHTML = storageHTML;
+function removerDoCarrinho(index) {
+    carrinho.splice(index, 1);
+    renderCarrinho();
+    atualizarContadorCarrinho();
+}
 
-            let colorHTML = '';
-            produtoSelecionado.cores.forEach((cor, i) => {
-                colorHTML += `<div onclick="selecionarCor(this, ${i})" class="color-circle" style="background-color: ${cor.cor};"></div>`;
-            });
-            document.getElementById('color-options').innerHTML = colorHTML;
+function adicionarAoCarrinho() {
+    if (!corSelecionada || !armazenamentoSelecionado) return alert("Escolha cor e armazenamento!");
+    
+    carrinho.push({
+        id: Date.now(),
+        nome: produtoSelecionado.nome,
+        cor: corSelecionada.nome,
+        armazenamento: armazenamentoSelecionado.tamanho,
+        preco: armazenamentoSelecionado.preco,
+        imagem: corSelecionada.imagem
+    });
+    alert("Produto adicionado ao carrinho!");
+    closeProductModal();
+    atualizarContadorCarrinho();
+}
 
-            selecionarArmazenamento(document.querySelector('.storage-btn'), 0);
-            selecionarCor(document.querySelector('.color-circle'), 0);
+function atualizarContadorCarrinho() {
+    document.getElementById('cart-count').textContent = carrinho.length;
+}
 
-            document.getElementById('product-modal').classList.remove('hidden');
-        }
+// ==================== CHECKOUT ====================
+function showCheckoutModal() {
+    if (carrinho.length === 0) return alert("Carrinho vazio!");
+    document.getElementById('cart-drawer').classList.add('hidden');
+    document.getElementById('checkout-modal').classList.remove('hidden');
+    selectPaymentMethod('pix');
+    atualizarTotalModal();
+}
 
-        function selecionarCor(el, index) {
-            document.querySelectorAll('.color-circle').forEach(e => e.classList.remove('selected'));
-            el.classList.add('selected');
-            corSelecionada = produtoSelecionado.cores[index];
-            document.getElementById('modal-imagem').src = corSelecionada.imagem;
-        }
+function closeCheckoutModal() {
+    document.getElementById('checkout-modal').classList.add('hidden');
+}
 
-        function selecionarArmazenamento(el, index) {
-            document.querySelectorAll('.storage-btn').forEach(e => e.classList.remove('active'));
-            el.classList.add('active');
-            armazenamentoSelecionado = produtoSelecionado.armazenamento[index];
-            document.getElementById('modal-preco').textContent = `R$ ${armazenamentoSelecionado.preco.toLocaleString('pt-BR')}`;
-        }
+function selectPaymentMethod(method) {
+    paymentMethod = method;
+    document.getElementById('btn-pix').classList.toggle('border-[#00bfff]', method === 'pix');
+    document.getElementById('btn-pix').classList.toggle('bg-blue-50', method === 'pix');
+    document.getElementById('btn-cartao').classList.toggle('border-[#00bfff]', method === 'cartao');
+    document.getElementById('cartao-form').classList.toggle('hidden', method !== 'cartao');
+}
 
-        function closeProductModal() {
-            document.getElementById('product-modal').classList.add('hidden');
-        }
+function atualizarTotalModal() {
+    const total = carrinho.reduce((acc, item) => acc + item.preco, 0) + 15;
+    document.getElementById('modal-total').textContent = `R$ ${total.toLocaleString('pt-BR')}`;
+}
 
-        function adicionarAoCarrinho() {
-            if (!corSelecionada || !armazenamentoSelecionado) {
-                alert("Escolha a cor e o armazenamento antes de adicionar!");
-                return;
-            }
+function confirmarPagamento() {
+    const endereco = document.getElementById('endereco-entrega').value.trim();
+    if (!endereco) return alert("Informe o endereço de entrega!");
 
-            const item = {
-                id: Date.now(),
-                nome: produtoSelecionado.nome,
-                cor: corSelecionada.nome,
-                armazenamento: armazenamentoSelecionado.tamanho,
-                preco: armazenamentoSelecionado.preco,
-                imagem: corSelecionada.imagem
-            };
+    const total = carrinho.reduce((acc, item) => acc + item.preco, 0) + 15;
+    alert(`✅ Compra finalizada com sucesso!\nTotal: R$ ${total.toLocaleString('pt-BR')}\nPagamento: ${paymentMethod.toUpperCase()}`);
 
-            carrinho.push(item);
-            atualizarContadorCarrinho();
-            alert(`${produtoSelecionado.nome} (${corSelecionada.nome} - ${armazenamentoSelecionado.tamanho}) adicionado ao carrinho!`);
-            closeProductModal();
-        }
+    carrinho = [];
+    atualizarContadorCarrinho();
+    closeCheckoutModal();
+}
 
-        // ==================== CARRINHO ====================
-        function atualizarContadorCarrinho() {
-            document.getElementById('cart-count').textContent = carrinho.length;
-        }
+// ==================== MODAL PRODUTO ====================
+function abrirModalProduto(id) {
+    produtoSelecionado = produtos.find(p => p.id === id);
+    if (!produtoSelecionado) return;
 
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            if (drawer.classList.contains('hidden')) {
-                renderCarrinho();
-                drawer.classList.remove('hidden');
-            } else {
-                drawer.classList.add('hidden');
-            }
-        }
+    document.getElementById('modal-nome').textContent = produtoSelecionado.nome;
+    document.getElementById('modal-descricao').textContent = produtoSelecionado.descricao;
+    document.getElementById('modal-imagem').src = produtoSelecionado.cores[0].imagem;
 
-        function renderCarrinho() {
-            const container = document.getElementById('cart-items');
-            let subtotal = 0;
-            let html = '';
+    let storageHTML = '';
+    produtoSelecionado.armazenamento.forEach((item, i) => {
+        storageHTML += `<button onclick="selecionarArmazenamento(this, ${i})" class="storage-btn border-2 border-slate-300 px-6 py-3 rounded-2xl font-medium">${item.tamanho}</button>`;
+    });
+    document.getElementById('storage-options').innerHTML = storageHTML;
 
-            if (carrinho.length === 0) {
-                container.innerHTML = `<p class="text-center text-slate-400 py-20">Seu carrinho está vazio.</p>`;
-                document.getElementById('subtotal').textContent = 'R$ 0,00';
-                document.getElementById('cart-total').textContent = 'R$ 15,00';
-                return;
-            }
+    let colorHTML = '';
+    produtoSelecionado.cores.forEach((cor, i) => {
+        colorHTML += `<div onclick="selecionarCor(this, ${i})" class="color-circle" style="background-color: ${cor.cor};"></div>`;
+    });
+    document.getElementById('color-options').innerHTML = colorHTML;
 
-            carrinho.forEach((item, index) => {
-                subtotal += item.preco;
-                html += `
-                    <div class="flex gap-4 border-b pb-6">
-                        <img src="${item.imagem}" class="w-20 h-20 object-contain rounded-2xl bg-slate-100">
-                        <div class="flex-1">
-                            <p class="font-medium">${item.nome}</p>
-                            <p class="text-sm text-slate-500">${item.cor} • ${item.armazenamento}</p>
-                            <p class="font-bold text-[#00bfff]">R$ ${item.preco.toLocaleString('pt-BR')}</p>
-                        </div>
-                        <button onclick="removerDoCarrinho(${index})" class="text-red-500 text-3xl">×</button>
-                    </div>
-                `;
-            });
+    selecionarArmazenamento(document.querySelector('.storage-btn'), 0);
+    selecionarCor(document.querySelector('.color-circle'), 0);
 
-            const total = subtotal + 15;
-            container.innerHTML = html;
-            document.getElementById('subtotal').textContent = `R$ ${subtotal.toLocaleString('pt-BR')}`;
-            document.getElementById('cart-total').textContent = `R$ ${total.toLocaleString('pt-BR')}`;
-        }
+    document.getElementById('product-modal').classList.remove('hidden');
+}
 
-        function removerDoCarrinho(index) {
-            carrinho.splice(index, 1);
-            atualizarContadorCarrinho();
-            renderCarrinho();
-        }
+function closeProductModal() {
+    document.getElementById('product-modal').classList.add('hidden');
+}
 
-        // ==================== PAGAMENTO ====================
-        function showPaymentModal() {
-            if (carrinho.length === 0) return alert("Adicione produtos ao carrinho primeiro!");
-            document.getElementById('payment-modal').classList.remove('hidden');
-            selectPaymentMethod('pix');
-        }
+function selecionarCor(el, index) {
+    document.querySelectorAll('.color-circle').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    corSelecionada = produtoSelecionado.cores[index];
+    document.getElementById('modal-imagem').src = corSelecionada.imagem;
+}
 
-        function closePaymentModal() {
-            document.getElementById('payment-modal').classList.add('hidden');
-        }
+function selecionarArmazenamento(el, index) {
+    document.querySelectorAll('.storage-btn').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+    armazenamentoSelecionado = produtoSelecionado.armazenamento[index];
+    document.getElementById('modal-preco').textContent = `R$ ${armazenamentoSelecionado.preco.toLocaleString('pt-BR')}`;
+}
 
-        function selectPaymentMethod(method) {
-            paymentMethod = method;
-            document.getElementById('btn-pix').classList.toggle('border-[#00bfff]', method === 'pix');
-            document.getElementById('btn-pix').classList.toggle('bg-blue-50', method === 'pix');
-            document.getElementById('btn-cartao').classList.toggle('border-[#00bfff]', method === 'cartao');
-            document.getElementById('cartao-form').classList.toggle('hidden', method !== 'cartao');
-        }
+// ==================== RENDER ====================
+function renderProdutos() {
+    const container = document.getElementById('produtos-grid');
+    let html = '';
+    produtos.forEach(p => {
+        html += `
+            <div onclick="abrirModalProduto(${p.id})" class="product-card bg-white rounded-3xl overflow-hidden shadow cursor-pointer">
+                <img src="${p.imagemBase}" class="w-full h-64 object-contain p-4">
+                <div class="p-6">
+                    <h3 class="font-bold text-lg">${p.nome}</h3>
+                    <p class="text-sm text-slate-500 line-clamp-2 my-2">${p.descricao}</p>
+                    <p class="text-2xl font-bold text-[#00bfff] mt-3">R$ ${p.precoBase.toLocaleString('pt-BR')}</p>
+                </div>
+            </div>`;
+    });
+    container.innerHTML = html;
+}
 
-        function confirmarPagamento() {
-            if (paymentMethod === 'cartao') {
-                if (document.getElementById('numero-cartao').value.trim().length !== 16) {
-                    return alert("Número do cartão deve ter 16 dígitos.");
-                }
-            }
+function renderRecomendadosPersonalizados() {
+    const container = document.getElementById('recomendados-grid');
+    let html = '';
+    produtos.slice(0, 3).forEach(p => {
+        html += `
+            <div onclick="abrirModalProduto(${p.id})" class="product-card bg-white rounded-3xl overflow-hidden shadow cursor-pointer">
+                <img src="${p.imagemBase}" class="w-full h-56 object-contain p-6">
+                <div class="p-6">
+                    <h3 class="font-bold text-lg">${p.nome}</h3>
+                    <p class="text-2xl font-bold text-[#00bfff] mt-3">R$ ${p.precoBase.toLocaleString('pt-BR')}</p>
+                </div>
+            </div>`;
+    });
+    container.innerHTML = html;
+}
 
-            const total = carrinho.reduce((acc, item) => acc + item.preco, 0) + 15;
-
-            const novoPedido = {
-                id: Date.now(),
-                usuarioId: usuarioLogado ? usuarioLogado.id : null,
-                data: new Date().toISOString(),
-                itens: JSON.parse(JSON.stringify(carrinho)),
-                total: total,
-                metodo: paymentMethod.toUpperCase()
-            };
-
-            pedidos.push(novoPedido);
-            localStorage.setItem('pedidos', JSON.stringify(pedidos));
-
-            alert("✅ Pagamento confirmado com sucesso!\nObrigado por comprar na Import Cell!");
-
-            carrinho = [];
-            atualizarContadorCarrinho();
-            closePaymentModal();
-            toggleCart();
-
-            if (usuarioLogado) renderMeusPedidos();
-        }
-
-        // ==================== AUTENTICAÇÃO ====================
-        function showAuthModal() {
-            if (usuarioLogado) showAccountModal();
-            else {
-                document.getElementById('auth-modal').classList.remove('hidden');
-                switchTab(0);
-            }
-        }
-
-        function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
-
-        function switchTab(tab) {
-            document.getElementById('login-form').classList.toggle('hidden', tab !== 0);
-            document.getElementById('register-form').classList.toggle('hidden', tab !== 1);
-            document.getElementById('tab-login').classList.toggle('tab-active', tab === 0);
-            document.getElementById('tab-register').classList.toggle('tab-active', tab === 1);
-        }
-
-        function fazerCadastro() {
-            const nome = document.getElementById('reg-nome').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const senha = document.getElementById('reg-password').value.trim();
-
-            if (!nome || !email || !senha) return alert("Preencha todos os campos!");
-
-            if (usuarios.find(u => u.email === email)) return alert("Este e-mail já está cadastrado!");
-
-            usuarios.push({ id: Date.now(), nome, email, senha });
-            localStorage.setItem('usuarios', JSON.stringify(usuarios));
-            alert("Conta criada com sucesso! Agora faça login.");
-            switchTab(0);
-        }
-
-        function fazerLogin() {
-            const email = document.getElementById('login-email').value.trim();
-            const senha = document.getElementById('login-password').value.trim();
-
-            const usuario = usuarios.find(u => u.email === email && u.senha === senha);
-            if (!usuario) return alert("E-mail ou senha incorretos!");
-
-            usuarioLogado = usuario;
-            localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-            atualizarInterfaceUsuario();
-            closeAuthModal();
-            alert(`Bem-vindo, ${usuario.nome}!`);
-        }
-
-        function fazerLogout() {
-            if (confirm("Deseja sair da conta?")) {
-                usuarioLogado = null;
-                localStorage.removeItem('usuarioLogado');
-                atualizarInterfaceUsuario();
-                closeAccountModal();
-            }
-        }
-
-        function atualizarInterfaceUsuario() {
-            const btn = document.getElementById('auth-button');
-            btn.innerHTML = usuarioLogado 
-                ? `${usuarioLogado.nome.split(' ')[0]} 👤` 
-                : `Entrar / Cadastrar 👤`;
-        }
-
-        function showAccountModal() {
-            if (!usuarioLogado) return;
-            document.getElementById('account-name').textContent = usuarioLogado.nome;
-            renderMeusPedidos();
-            document.getElementById('account-modal').classList.remove('hidden');
-        }
-
-        function closeAccountModal() {
-            document.getElementById('account-modal').classList.add('hidden');
-        }
-
-        function renderMeusPedidos() {
-            const container = document.getElementById('meus-pedidos');
-            const meusPedidos = pedidos.filter(p => p.usuarioId === usuarioLogado.id);
-
-            if (meusPedidos.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-center py-12">Você ainda não realizou nenhuma compra.</p>`;
-                return;
-            }
-
-            let html = '';
-            meusPedidos.forEach(pedido => {
-                const data = new Date(pedido.data).toLocaleDateString('pt-BR');
-                html += `
-                    <div class="border rounded-2xl p-5">
-                        <div class="flex justify-between text-sm text-slate-500 mb-2">
-                            <span>${data}</span>
-                            <span>${pedido.metodo}</span>
-                        </div>
-                        <p class="font-medium">${pedido.itens.map(i => i.nome).join(' + ')}</p>
-                        <p class="text-[#00bfff] font-bold text-xl mt-2">R$ ${pedido.total.toLocaleString('pt-BR')}</p>
-                    </div>`;
-            });
-            container.innerHTML = html;
-        }
-
-        // Inicialização
-        window.onload = () => {
-            renderProdutos();
-            atualizarInterfaceUsuario();
-            atualizarContadorCarrinho();
-        };
-    </script>
-
-    <!-- VLibras - Versão simples -->
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-            <div class="vw-plugin-top-wrapper"></div>
-        </div>
-    </div>
-
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-        new window.VLibras.Widget();
-    </script>
-
-<footer>
-            <p class="copyright">© Import Cell - 2026</p>
-        </footer>
-
+// Inicialização
+window.onload = () => {
+    renderProdutos();
+    renderRecomendadosPersonalizados();
+    atualizarAuthButton();
+};
+</script>
 </body>
 </html>
